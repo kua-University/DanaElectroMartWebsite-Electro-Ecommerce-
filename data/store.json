@@ -1,0 +1,131 @@
+{
+  "products": [
+    {
+      "id": "phone-x1",
+      "name": "Smartphone X1",
+      "category": "Smartphones",
+      "price": 999.99,
+      "stock": 4,
+      "rating": 4.8,
+      "image": "/assets/VprcU.jpg",
+      "description": "Flagship smartphone with OLED display, secure checkout support, and fast delivery eligibility."
+    },
+    {
+      "id": "laptop-pro",
+      "name": "NovaBook Pro 14",
+      "category": "Laptops",
+      "price": 1299,
+      "stock": 5,
+      "rating": 4.7,
+      "image": "/assets/HAzze.jpg",
+      "description": "Portable laptop bundle for students and creators, tracked through inventory and order modules."
+    },
+    {
+      "id": "airbuds",
+      "name": "AirBuds Lite",
+      "category": "Audio",
+      "price": 149,
+      "stock": 12,
+      "rating": 4.5,
+      "image": "/assets/JON2o.jpg",
+      "description": "Wireless audio accessory with low-latency pairing and standard or express shipping options."
+    },
+    {
+      "id": "game-hub",
+      "name": "Game Hub Mini",
+      "category": "Gaming",
+      "price": 259,
+      "stock": 4,
+      "rating": 4.4,
+      "image": "/assets/h6xS8.jpg",
+      "description": "Compact gaming accessory shown in the cart and fulfillment pipeline."
+    }
+  ],
+  "cart": [
+    {
+      "productId": "phone-x1",
+      "qty": 2
+    }
+  ],
+  "orders": [
+    {
+      "id": "ORD-2852",
+      "customer": "Dana Student",
+      "total": 3017.97,
+      "status": "Paid",
+      "shipping": {
+        "customer": "Dana Student",
+        "address": "gjg",
+        "city": "hk",
+        "phone": "kh",
+        "delivery": "standard"
+      },
+      "createdAt": "2026-05-06T12:51:07.064Z"
+    },
+    {
+      "id": "ORD-1074",
+      "customer": "Prototype Tester",
+      "total": 1017.99,
+      "status": "Paid",
+      "shipping": {
+        "city": "Los Angeles",
+        "delivery": "standard"
+      },
+      "createdAt": "2026-05-06T12:30:50.658Z"
+    },
+    {
+      "id": "ORD-1001",
+      "customer": "Dana Demo",
+      "total": 1148.99,
+      "status": "Paid",
+      "createdAt": "2026-05-02T09:00:00.000Z"
+    }
+  ],
+  "events": [
+    {
+      "time": "6:00:22 AM",
+      "module": "Cart",
+      "message": "Smartphone X1 added to cart"
+    },
+    {
+      "time": "5:51:07 AM",
+      "module": "Notification",
+      "message": "Twilio-style SMS queued for Dana Student"
+    },
+    {
+      "time": "5:51:07 AM",
+      "module": "Payment",
+      "message": "Stripe-style payment approved for ORD-2852"
+    },
+    {
+      "time": "5:38:13 AM",
+      "module": "Cart",
+      "message": "Smartphone X1 added to cart"
+    },
+    {
+      "time": "5:31:46 AM",
+      "module": "Cart",
+      "message": "Smartphone X1 added to cart"
+    },
+    {
+      "time": "5:30:50 AM",
+      "module": "Notification",
+      "message": "Twilio-style SMS queued for Prototype Tester"
+    },
+    {
+      "time": "5:30:50 AM",
+      "module": "Payment",
+      "message": "Stripe-style payment approved for ORD-1074"
+    },
+    {
+      "time": "5:30:50 AM",
+      "module": "Cart",
+      "message": "Smartphone X1 added to cart"
+    },
+    {
+      "time": "09:00",
+      "module": "Notification",
+      "message": "Welcome email sent for ORD-1001"
+    }
+  ]
+}

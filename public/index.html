@@ -1,0 +1,204 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Dana ElectroMart Prototype</title>
+    <link rel="stylesheet" href="/styles.css">
+  </head>
+  <body>
+    <div class="shell">
+      <aside class="rail">
+        <div class="brand"><span class="mark"></span>Dana ElectroMart</div>
+        <button class="nav" data-view="shop">Home</button>
+        <button class="nav" data-view="catalog">Products</button>
+        <button class="nav" data-view="cart">Cart</button>
+        <button class="nav" data-view="checkout">Checkout</button>
+        <button class="nav" data-view="profile">Profile</button>
+        <button class="nav" data-view="dashboard">Admin</button>
+      </aside>
+
+      <main>
+        <header class="topbar">
+          <input id="search" type="search" placeholder="Search for products...">
+          <div class="top-actions">
+            <span id="cartBadge">0</span>
+            <button id="resetDemo">Refresh Data</button>
+          </div>
+        </header>
+
+        <section id="welcome" class="view active">
+          <div class="welcome-page">
+            <div class="welcome-copy">
+              <h1>Welcome to Dana ElectroMart</h1>
+              <p>Sign in to shop electronics, save your profile, checkout with a payment method, and track order activity through the admin dashboard.</p>
+              <div class="module-strip compact">
+                <article><strong>Products</strong><span>Catalog browsing</span></article>
+                <article><strong>Orders</strong><span>Checkout storage</span></article>
+                <article><strong>Payments</strong><span>Card interface</span></article>
+              </div>
+            </div>
+            <form id="loginForm" class="login-card">
+              <h2>Login</h2>
+              <label>Email<input name="email" type="email" required value="dana@student.edu"></label>
+              <label>Password<input name="password" type="password" required value="electromart"></label>
+              <div class="auth-actions">
+                <button type="submit">Sign In</button>
+                <button id="signupButton" type="button" class="secondary">Sign Up</button>
+              </div>
+              <p id="loginNote">Demo login saves a local user profile for this prototype.</p>
+            </form>
+          </div>
+        </section>
+
+        <section id="shop" class="view">
+          <div class="hero">
+            <div>
+              <h1>Shop Latest <span>Electronics</span></h1>
+              <button data-jump="catalog">Browse Products</button>
+            </div>
+            <img src="/assets/VprcU.jpg" alt="Smartphone product showcase">
+          </div>
+          <div class="module-strip">
+            <article><strong>Catalog Module</strong><span>GET /api/products</span></article>
+            <article><strong>Cart Module</strong><span>POST /api/cart</span></article>
+            <article><strong>Checkout Module</strong><span>POST /api/checkout</span></article>
+            <article><strong>Admin Module</strong><span>GET /api/dashboard</span></article>
+          </div>
+        </section>
+
+        <section id="catalog" class="view">
+          <div class="section-head">
+            <div>
+              <p class="eyebrow">Product catalog</p>
+              <h2>Browse Inventory</h2>
+            </div>
+            <div id="categories" class="tabs"></div>
+          </div>
+          <div id="productGrid" class="grid"></div>
+        </section>
+
+        <section id="cart" class="view">
+          <div class="section-head">
+            <div>
+              <p class="eyebrow">Cart service</p>
+              <h2>Now Added Summary</h2>
+            </div>
+            <button data-jump="checkout">Proceed to Checkout</button>
+          </div>
+          <div class="split">
+            <div id="cartItems" class="list"></div>
+            <aside class="summary">
+              <h3>Order Summary</h3>
+              <div><span>Subtotal</span><strong id="subtotal">$0.00</strong></div>
+              <div><span>Shipping</span><strong id="shipping">$0.00</strong></div>
+              <div class="total"><span>Total</span><strong id="total">$0.00</strong></div>
+            </aside>
+          </div>
+        </section>
+
+        <section id="checkout" class="view">
+          <div class="checkout-panel">
+            <form id="checkoutForm">
+              <h2>Step 1: Shipping Information</h2>
+              <div class="progress"><span>1</span><i></i><span>2</span><i></i><span>3</span></div>
+              <label>Customer Name<input name="customer" required value="Dana Student"></label>
+              <label>Address Line 1<input name="address" required placeholder="123 Main Street"></label>
+              <label>City<input name="city" required placeholder="Los Angeles"></label>
+              <label>Phone Number<input name="phone" required placeholder="+1 555 0100"></label>
+              <div class="delivery">
+                <label><input type="radio" name="delivery" value="standard" checked> Standard Shipping</label>
+                <label><input type="radio" name="delivery" value="express"> Express Shipping</label>
+              </div>
+              <div class="payment-box">
+                <h3>Payment Method</h3>
+                <div class="payment-options">
+                  <label><input type="radio" name="paymentType" value="card" checked> Credit Card</label>
+                  <label><input type="radio" name="paymentType" value="paypal"> PayPal</label>
+                </div>
+                <label>Card Number<input name="cardNumber" inputmode="numeric" value="4242 4242 4242 4242"></label>
+                <div class="payment-grid">
+                  <label>Expiry<input name="expiry" value="12/28"></label>
+                  <label>CVV<input name="cvv" inputmode="numeric" value="123"></label>
+                </div>
+              </div>
+              <button type="submit">Place Order</button>
+            </form>
+            <aside class="summary">
+              <h3>Order Summary</h3>
+              <div><span>Cart Total</span><strong id="checkoutTotal">$0.00</strong></div>
+              <p id="checkoutNote">Checkout calls payment, order, inventory, and notification modules.</p>
+            </aside>
+          </div>
+        </section>
+
+        <section id="profile" class="view">
+          <div class="section-head">
+            <div>
+              <p class="eyebrow">Customer profile</p>
+              <h2>Profile</h2>
+            </div>
+            <button id="logoutButton" class="secondary">Logout</button>
+          </div>
+          <div class="profile-grid">
+            <form id="profileForm" class="panel profile-card">
+              <h3>Account Details</h3>
+              <label>Full Name<input name="name" value="Dana Student"></label>
+              <label>Email<input name="email" type="email" value="dana@student.edu"></label>
+              <label>Phone<input name="phone" value="+1 555 0100"></label>
+              <label>Default City<input name="city" value="Los Angeles"></label>
+              <button type="submit">Save Profile</button>
+            </form>
+            <div class="panel">
+              <h3>Saved Information</h3>
+              <div id="profileSummary"></div>
+            </div>
+          </div>
+        </section>
+
+        <section id="dashboard" class="view">
+          <div class="section-head">
+            <div>
+              <p class="eyebrow">Admin dashboard</p>
+              <h2>System Evidence</h2>
+            </div>
+          </div>
+          <div class="stats">
+            <article><span>Total Revenue</span><strong id="revenue">$0</strong></article>
+            <article><span>Orders Today</span><strong id="ordersToday">0</strong></article>
+            <article><span>Active Users</span><strong id="activeUsers">0</strong></article>
+          </div>
+          <div class="dashboard-grid">
+            <div class="panel">
+              <h3>Recent Orders</h3>
+              <div id="recentOrders"></div>
+            </div>
+            <div class="panel">
+              <h3>Low Stock Alerts</h3>
+              <div id="lowStock"></div>
+            </div>
+            <div class="panel wide">
+              <h3>Module Events Saved in JSON Storage</h3>
+              <div id="events"></div>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <template id="productTemplate">
+      <article class="product-card">
+        <img>
+        <div class="product-info">
+          <span></span>
+          <h3></h3>
+          <p></p>
+          <div class="product-row"><strong></strong><small></small></div>
+          <button>Add to Cart</button>
+        </div>
+      </article>
+    </template>
+
+    <script src="/app.js" type="module"></script>
+  </body>
+</html>
