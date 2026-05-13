@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>ElectroMart Login</title>
+  <style>
+    body {
+      font-family: Arial;
+      background: #0f172a;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      color: white;
+    }
+
+    .box {
+      background: #1e293b;
+      padding: 30px;
+      border-radius: 10px;
+      width: 300px;
+    }
+
+    input {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+    }
+
+    button {
+      width: 100%;
+      padding: 10px;
+      background: #2563eb;
+      border: none;
+      color: white;
+      cursor: pointer;
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="box">
+  <h2>ElectroMart Login</h2>
+
+  <input id="username" placeholder="Username">
+  <input id="password" type="password" placeholder="Password">
+
+  <button onclick="login()">Login</button>
+</div>
+
+<script>
+function login() {
+  const user = document.getElementById("username").value;
+
+  if (!user) {
+    alert("Enter username");
+    return;
+  }
+
+  localStorage.setItem("user", user);
+  window.location.href = "dashboard.html";
+}
+</script>
+
+</body>
+</html>

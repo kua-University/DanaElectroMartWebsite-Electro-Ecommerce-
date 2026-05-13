@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>ElectroMart Dashboard</title>
+
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial;
+      background: #f1f5f9;
+    }
+
+    header {
+      background: #0f172a;
+      color: white;
+      padding: 15px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .container {
+      display: flex;
+    }
+
+    /* PRODUCTS */
+    .products {
+      flex: 3;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 15px;
+      padding: 20px;
+    }
+
+    .card {
+      background: white;
+      border-radius: 10px;
+      padding: 15px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      text-align: center;
+    }
+
+    .price {
+      color: green;
+      font-size: 18px;
+      font-weight: bold;
+    }
+
+    button {
+      background: #2563eb;
+      color: white;
+      border: none;
+      padding: 10px;
+      margin-top: 10px;
+      cursor: pointer;
+      width: 100%;
+      border-radius: 5px;
+    }
+
+    button:hover {
+      background: #1e40af;
+    }
+
+    /* CART */
+    .cart {
+      flex: 1;
+      background: white;
+      padding: 15px;
+      border-left: 1px solid #ddd;
+      height: 100vh;
+      position: sticky;
+      top: 0;
+    }
+
+    .cart-item {
+      display: flex;
+      justify-content: space-between;
+      margin: 10px 0;
+      border-bottom: 1px solid #eee;
+      padding-bottom: 5px;
+    }
+
+    .order-btn {
+      background: green;
+      margin-top: 20px;
+    }
+
+    .logout {
+      background: red;
+      padding: 8px;
+      border: none;
+      color: white;
+      cursor: pointer;
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <div>🛒 ElectroMart</div>
+  <div>
+    <span id="user"></span>
+    <button class="logout" onclick="logoutUser()">Logout</button>
+  </div>
+</header>
+
+<div class="container">
+
+  <!-- PRODUCTS -->
+  <div class="products" id="products"></div>
+
+  <!-- CART -->
+  <div class="cart">
+    <h3>Your Cart</h3>
+    <div id="cart"></div>
+
+    <h3>Total: <span id="total">0</span> ETB</h3>
+
+    <button class="order-btn" onclick="placeOrder()">Place Order</button>
+  </div>
+
+</div>
+
+<script src="auth.js"></script>
+
+<script>
+protectPage();
+
+const API = "http://localhost:5000";
+
+document.getElementById("user").innerText = "User: " + getUser();
+
+let cart = [];
+
+async function loadProducts() {
+  const res = await fetch(`${API}/products`);
+  const data = await res.json();
+
+  const container = document.getElementById("products");
+
+  data.forEach(p => {
+    container.innerHTML += `
+      <div class="card">
+        <h3>${p.name}</h3>
+        <p class="price">${p.price} ETB</p>
+        <button onclick="addToCart('${p.name}', ${p.price})">
+          Add to Cart
+        </button>
+      </div>
+    `;
+  });
+}
+
+loadProducts();
+
+function addToCart(name, price) {
+  cart.push({ name, price });
+  renderCart();
+}
+
+function renderCart() {
+  const cartDiv = document.getElementById("cart");
+  cartDiv.innerHTML = "";
+
+  let total = 0;
+
+  cart.forEach(item => {
+    total += item.price;
+
+    cartDiv.innerHTML += `
+      <div class="cart-item">
+        <span>${item.name}</span>
+        <span>${item.price} ETB</span>
+      </div>
+    `;
+  });
+
+  document.getElementById("total").innerText = total;
+}
+
+function placeOrder() {
+  if (cart.length === 0) {
+    alert("Cart is empty!");
+    return;
+  }
+
+  fetch(`${API}/orders`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      user: getUser(),
+      cart: cart
+    })
+  });
+
+  alert("Order placed successfully!");
+
+  cart = [];
+  renderCart();
+}
+</script>
+
+</body>
+</html>
