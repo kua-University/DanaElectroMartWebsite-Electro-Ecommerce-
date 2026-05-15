@@ -1,105 +1,52 @@
-const express = require('express');
-const cors = require('cors');
-const sqlite3 = require('sqlite3').verbose();
+const express = require("express");
+const cors = require("cors");
+require("dotenv").config();
 
 const app = express();
 
+// Middleware
 app.use(cors());
 app.use(express.json());
 
-/* =========================
-   DATABASE SETUP (SQLite)
-========================= */
-
-// FIXED: safer path for Render + local
-const db = new sqlite3.Database(__dirname + '/electromart.db', (err) => {
-  if (err) {
-    console.log("DB Error:", err.message);
-  } else {
-    console.log("Connected to SQLite Database");
-  }
+// Health check route (IMPORTANT for Render)
+app.get("/", (req, res) => {
+  res.send("Dana ElectroMart backend running 🚀");
 });
 
-// Create products table
-db.serialize(() => {
-  db.run(`
-    CREATE TABLE IF NOT EXISTS products (
-      id INTEGER PRIMARY KEY AUTOINCREMENT,
-      name TEXT,
-      price INTEGER
-    )
-  `);
-
-  // Insert default products (only once)
-  db.run(`
-    INSERT INTO products (name, price)
-    SELECT 'Laptop', 50000
-    WHERE NOT EXISTS (SELECT 1 FROM products WHERE name='Laptop')
-  `);
-
-  db.run(`
-    INSERT INTO products (name, price)
-    SELECT 'Phone', 20000
-    WHERE NOT EXISTS (SELECT 1 FROM products WHERE name='Phone')
-  `);
-
-  db.run(`
-    INSERT INTO products (name, price)
-    SELECT 'Headphones', 3000
-    WHERE NOT EXISTS (SELECT 1 FROM products WHERE name='Headphones')
-  `);
-});
-
-/* =========================
-   ROUTES
-========================= */
-
-// Home route
-app.get('/', (req, res) => {
-  res.send('🛒 ElectroMart Backend Running');
-});
-
-// Get products
-app.get('/products', (req, res) => {
-  db.all('SELECT * FROM products', [], (err, rows) => {
-    if (err) {
-      console.log(err);
-      return res.status(500).json({ error: err.message });
-    }
-    res.json(rows);
-  });
-});
-
-/* =========================
-   ORDERS ROUTE
-========================= */
-
-app.post('/orders', (req, res) => {
-  const order = req.body;
-
-  console.log("🔥 NEW ORDER RECEIVED:");
-  console.log(JSON.stringify(order, null, 2));
-
-  if (!order || !order.cart || order.cart.length === 0) {
-    return res.status(400).json({
-      message: "Cart is empty"
-    });
-  }
-
+// Test API route
+app.get("/api/test", (req, res) => {
   res.json({
-    message: "Order received successfully",
-    orderId: Date.now(),
-    order
+    success: true,
+    message: "API is working correctly",
   });
 });
 
-/* =========================
-   START SERVER (FIXED FOR RENDER)
-========================= */
+// Example environment check (safe debug)
+app.get("/api/env", (req, res) => {
+  res.json({
+    node_env: process.env.NODE_ENV || "not set",
+    port: process.env.PORT || 5000,
+  });
+});
 
-// FIXED: Render uses dynamic port
+// Handle 404 routes
+app.use((req, res) => {
+  res.status(404).json({
+    error: "Route not found",
+  });
+});
+
+// Error handler (prevents crash)
+app.use((err, req, res, next) => {
+  console.error("Server Error:", err);
+  res.status(500).json({
+    error: "Internal Server Error",
+  });
+});
+
+// Start server
 const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => {
-  console.log(`🚀 Server running on port ${PORT}`);
+  console.log(`Server running on port ${PORT}`);
 });
