@@ -10,7 +10,9 @@ app.use(express.json());
 /* =========================
    DATABASE SETUP (SQLite)
 ========================= */
-const db = new sqlite3.Database('./electromart.db', (err) => {
+
+// FIXED: safer path for Render + local
+const db = new sqlite3.Database(__dirname + '/electromart.db', (err) => {
   if (err) {
     console.log("DB Error:", err.message);
   } else {
@@ -92,11 +94,12 @@ app.post('/orders', (req, res) => {
 });
 
 /* =========================
-   START SERVER
+   START SERVER (FIXED FOR RENDER)
 ========================= */
 
-const PORT = 5000;
+// FIXED: Render uses dynamic port
+const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => {
-  console.log(`🚀 Server running on http://localhost:${PORT}`);
+  console.log(`🚀 Server running on port ${PORT}`);
 });
